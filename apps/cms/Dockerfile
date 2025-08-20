@@ -52,6 +52,7 @@ RUN pnpm run build
 FROM base AS runner
 RUN apk add git --no-cache \
     && apk add --no-cache libc6-compat \
+    && apk add --no-cache curl \
     && npm install -g corepack@0.31.0 \
     && corepack enable \
     && corepack prepare pnpm@10.8.0 --activate
@@ -62,10 +63,15 @@ WORKDIR /app
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/package.json ./package.json
+COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/package.json ./package.json
+
+# Create cache directories with proper ownership
+USER root
+RUN mkdir -p .next/cache/fetch-cache .next/cache/images && \
+    chown -R nextjs:nodejs .next/cache
 
 USER nextjs
 
