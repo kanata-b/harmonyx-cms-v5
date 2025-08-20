@@ -55,7 +55,8 @@ export interface GetByIdOptions {
 
 // Utility function for error handling
 const handleError = <T>(fallback: T, context?: string) => (error: unknown) => {
-  const errorContext = context ? `[${context}]` : "[Directus Query]";
+  const directusUrl = process.env.DIRECTUS_URL || "";
+  const errorContext = context ? `[${directusUrl}-${context}]` : "[Directus Query]";
   console.error(`${errorContext} Error:`, error);
   
   // Log additional error details if available

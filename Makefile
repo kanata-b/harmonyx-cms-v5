@@ -23,6 +23,7 @@ env-cms:
 	@mkdir -p apps/cms
 	@echo "# HarmonyX CMS - Next.js Application Environment Variables" > apps/cms/.env.example
 	@echo "NEXT_PUBLIC_APP_URL=http://localhost:3000" >> apps/cms/.env.example
+	@echo "NEXT_PUBLIC_DIRECTUS_URL=http://localhost:8055" >> apps/cms/.env.example
 	@echo "NODE_ENV=development" >> apps/cms/.env.example
 	@echo "AUTH_SECRET=TsV7D4wQZBEzQ6JIlXxifJl0/5YAarRyfFkDiDrfsj/UbzlXf0/sTRkcTbc=" >> apps/cms/.env.example
 	@echo "AUTH_URL=http://localhost:3000" >> apps/cms/.env.example

@@ -2,10 +2,10 @@ import { createDirectus, rest, authentication, realtime } from "@directus/sdk";
 import { Schema } from "./directus-schemas";
 
 const directusUrl =
-  process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
+  process.env.DIRECTUS_URL || "http://directus:8055";
 
 if (!directusUrl) {
-  throw new Error("NEXT_PUBLIC_DIRECTUS_URL environment variable is required");
+  throw new Error("DIRECTUS_URL environment variable is required");
 }
 
 export const directus = createDirectus(directusUrl)

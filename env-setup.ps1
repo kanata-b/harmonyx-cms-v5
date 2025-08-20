@@ -37,6 +37,7 @@ function Create-CmsEnv {
 
 # Next.js Application Configuration
 NEXT_PUBLIC_APP_URL=http://localhost:3000
+NEXT_PUBLIC_DIRECTUS_URL=http://localhost:8055
 
 # Development Environment
 NODE_ENV=development

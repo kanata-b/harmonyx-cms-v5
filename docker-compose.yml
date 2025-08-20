@@ -15,8 +15,19 @@ services:
     container_name: cms-app
     ports:
       - "3000:3000"
-    env_file:
-      - ./apps/cms/.env
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_APP_URL=http://localhost:3000
+      - NEXT_PUBLIC_DIRECTUS_URL=http://localhost:8055
+      - DIRECTUS_URL=http://directus:8055
+      - AUTH_SECRET=TsV7D4wQZBEzQ6JIlXxifJl0/5YAarRyfFkDiDrfsj/UbzlXf0/sTRkcTbc=
+      - AUTH_URL=http://localhost:3000
+      - AUTH_TRUST_HOST=true
+      - STAGE=development
+      - SKIP_ENV_VALIDATION=false
+      - NEXT_TELEMETRY_DISABLED=1
+    # env_file:
+    #   - ./apps/cms/.env
     depends_on:
       postgres:
         condition: service_healthy
