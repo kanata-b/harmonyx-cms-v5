@@ -54,8 +54,16 @@ export interface GetByIdOptions {
 }
 
 // Utility function for error handling
-const handleError = <T>(fallback: T) => (error: unknown) => {
-  console.error("Directus query error:", error);
+const handleError = <T>(fallback: T, context?: string) => (error: unknown) => {
+  const errorContext = context ? `[${context}]` : "[Directus Query]";
+  console.error(`${errorContext} Error:`, error);
+  
+  // Log additional error details if available
+  if (error instanceof Error) {
+    console.error(`${errorContext} Error message:`, error.message);
+    console.error(`${errorContext} Stack trace:`, error.stack);
+  }
+  
   return fallback;
 };
 
@@ -106,7 +114,7 @@ export const directusQueries = {
         const posts = await directus.request(readItems("posts", queryOptions));
         return posts as Post[];
       } catch (error) {
-        return handleError<Post[]>([])(error);
+        return handleError<Post[]>([], "posts.getAll")(error);
       }
     },
 
@@ -121,7 +129,7 @@ export const directusQueries = {
         const post = await directus.request(readItem("posts", id, queryOptions));
         return post as Post;
       } catch (error) {
-        return handleError<Post | null>(null)(error);
+        return handleError<Post | null>(null, "posts.getById")(error);
       }
     },
 
@@ -136,7 +144,7 @@ export const directusQueries = {
         );
         return result[0] as Post || null;
       } catch (error) {
-        return handleError<Post | null>(null)(error);
+        return handleError<Post | null>(null, "posts.getBySlug")(error);
       }
     },
 
@@ -214,7 +222,7 @@ export const directusQueries = {
         const pages = await directus.request(readItems("pages", queryOptions));
         return pages as Page[];
       } catch (error) {
-        return handleError<Page[]>([])(error);
+        return handleError<Page[]>([], "pages.getAll")(error);
       }
     },
 
@@ -229,7 +237,7 @@ export const directusQueries = {
         const page = await directus.request(readItem("pages", id, queryOptions));
         return page as Page;
       } catch (error) {
-        return handleError<Page | null>(null)(error);
+        return handleError<Page | null>(null, "pages.getById")(error);
       }
     },
 
@@ -244,7 +252,7 @@ export const directusQueries = {
         );
         return result[0] as Page || null;
       } catch (error) {
-        return handleError<Page | null>(null)(error);
+        return handleError<Page | null>(null, "pages.getBySlug")(error);
       }
     },
 
@@ -305,7 +313,7 @@ export const directusQueries = {
         const forms = await directus.request(readItems("forms", queryOptions));
         return forms as Form[];
       } catch (error) {
-        return handleError<Form[]>([])(error);
+        return handleError<Form[]>([], "forms.getAll")(error);
       }
     },
 
@@ -320,7 +328,7 @@ export const directusQueries = {
         const form = await directus.request(readItem("forms", id, queryOptions));
         return form as Form;
       } catch (error) {
-        return handleError<Form | null>(null)(error);
+        return handleError<Form | null>(null, "forms.getById")(error);
       }
     },
 
@@ -373,7 +381,7 @@ export const directusQueries = {
         const navigation = await directus.request(readItems("navigation", queryOptions));
         return navigation as Navigation[];
       } catch (error) {
-        return handleError<Navigation[]>([])(error);
+        return handleError<Navigation[]>([], "navigation.getAll")(error);
       }
     },
 
@@ -388,7 +396,7 @@ export const directusQueries = {
         const navigation = await directus.request(readItem("navigation", id, queryOptions));
         return navigation as Navigation;
       } catch (error) {
-        return handleError<Navigation | null>(null)(error);
+        return handleError<Navigation | null>(null, "navigation.getById")(error);
       }
     },
 
@@ -433,7 +441,7 @@ export const directusQueries = {
         );
         return result[0] as Globals || null;
       } catch (error) {
-        return handleError<Globals | null>(null)(error);
+        return handleError<Globals | null>(null, "globals.get")(error);
       }
     },
 
@@ -470,7 +478,7 @@ export const directusQueries = {
         const blocks = await directus.request(readItems("block_hero", queryOptions));
         return blocks as BlockHero[];
       } catch (error) {
-        return handleError<BlockHero[]>([])(error);
+        return handleError<BlockHero[]>([], "blockHero.getAll")(error);
       }
     },
 
@@ -485,7 +493,7 @@ export const directusQueries = {
         const block = await directus.request(readItem("block_hero", id, queryOptions));
         return block as BlockHero;
       } catch (error) {
-        return handleError<BlockHero | null>(null)(error);
+        return handleError<BlockHero | null>(null, "blockHero.getById")(error);
       }
     },
 
@@ -535,7 +543,7 @@ export const directusQueries = {
         const blocks = await directus.request(readItems("block_richtext", queryOptions));
         return blocks as BlockRichtext[];
       } catch (error) {
-        return handleError<BlockRichtext[]>([])(error);
+        return handleError<BlockRichtext[]>([], "blockRichtext.getAll")(error);
       }
     },
 
@@ -545,7 +553,7 @@ export const directusQueries = {
         const block = await directus.request(readItem("block_richtext", id, { fields: fields || ["*"] }));
         return block as BlockRichtext;
       } catch (error) {
-        return handleError<BlockRichtext | null>(null)(error);
+        return handleError<BlockRichtext | null>(null, "blockRichtext.getById")(error);
       }
     },
 
@@ -595,7 +603,7 @@ export const directusQueries = {
         const prompts = await directus.request(readItems("ai_prompts", queryOptions));
         return prompts as AiPrompt[];
       } catch (error) {
-        return handleError<AiPrompt[]>([])(error);
+        return handleError<AiPrompt[]>([], "aiPrompts.getAll")(error);
       }
     },
 
@@ -605,7 +613,7 @@ export const directusQueries = {
         const prompt = await directus.request(readItem("ai_prompts", id, { fields: fields || ["*"] }));
         return prompt as AiPrompt;
       } catch (error) {
-        return handleError<AiPrompt | null>(null)(error);
+        return handleError<AiPrompt | null>(null, "aiPrompts.getById")(error);
       }
     },
 
@@ -669,7 +677,7 @@ export const directusQueries = {
         const redirects = await directus.request(readItems("redirects", queryOptions));
         return redirects as Redirect[];
       } catch (error) {
-        return handleError<Redirect[]>([])(error);
+        return handleError<Redirect[]>([], "redirects.getAll")(error);
       }
     },
 
@@ -679,7 +687,7 @@ export const directusQueries = {
         const redirect = await directus.request(readItem("redirects", id, { fields: fields || ["*"] }));
         return redirect as Redirect;
       } catch (error) {
-        return handleError<Redirect | null>(null)(error);
+        return handleError<Redirect | null>(null, "redirects.getById")(error);
       }
     },
 
@@ -693,7 +701,7 @@ export const directusQueries = {
         );
         return result[0] as Redirect || null;
       } catch (error) {
-        return handleError<Redirect | null>(null)(error);
+        return handleError<Redirect | null>(null, "redirects.getByFromUrl")(error);
       }
     },
 
@@ -738,7 +746,7 @@ export const directusQueries = {
         const submissions = await directus.request(readItems("form_submissions", queryOptions));
         return submissions as FormSubmission[];
       } catch (error) {
-        return handleError<FormSubmission[]>([])(error);
+        return handleError<FormSubmission[]>([], "formSubmissions.getAll")(error);
       }
     },
 
@@ -753,7 +761,7 @@ export const directusQueries = {
         const submission = await directus.request(readItem("form_submissions", id, queryOptions));
         return submission as FormSubmission;
       } catch (error) {
-        return handleError<FormSubmission | null>(null)(error);
+        return handleError<FormSubmission | null>(null, "formSubmissions.getById")(error);
       }
     },
 
