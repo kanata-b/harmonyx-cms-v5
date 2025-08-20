@@ -37,13 +37,11 @@ export async function generateMetadata({ params }: PostDetailPageProps): Promise
       publishedTime: post.published_at || post.date_created || undefined,
       modifiedTime: post.date_updated || undefined,
       authors: [getAuthorName(post.author)],
-      images: post.image ? [getImageUrl(post.image)] : undefined,
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title || 'Untitled Post',
       description: post.description || 'A blog post from our CMS',
-      images: post.image ? [getImageUrl(post.image)] : undefined,
     }
   };
 }
@@ -51,8 +49,22 @@ export async function generateMetadata({ params }: PostDetailPageProps): Promise
 // Helper functions
 const getImageUrl = (image: string | DirectusFile<any> | null): string => {
   if (!image) return "/placeholder.svg";
-  if (typeof image === "string") return image;
-  return `/api/assets/${image.id}` || "/placeholder.svg";
+  
+  const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || "http://localhost:8055";
+  
+  if (typeof image === "string") {
+    const url = `${directusUrl}/assets/${image}`;
+    console.log('Generated string URL:', url);
+    return url;
+  }
+  
+  if (image?.id) {
+    const url = `${directusUrl}/assets/${image.id}`;
+    console.log('Generated object URL:', url);
+    return url;
+  }
+  
+  return "/placeholder.svg";
 };
 
 const formatDate = (date: string | null): string => {
@@ -180,7 +192,7 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
                 width={800}
                 height={400}
                 className="w-full h-auto object-cover"
-                priority
+                unoptimized
               />
             </div>
           )}

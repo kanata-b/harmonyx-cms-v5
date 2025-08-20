@@ -31,13 +31,26 @@ const nextConfig = {
     ignoreBuildErrors: process.env.NODE_ENV === "production",
   },
   images: {
+    domains: ['localhost', '127.0.0.1'],
+    remotePatterns: [
+       {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '8055',
+        pathname: '/assets/**',
+      },
+      {
+        protocol: 'http',
+        hostname: '127.0.0.1',
+        port: '8055',
+        pathname: '/assets/**',
+      },
+    ],
     formats: ["image/webp", "image/avif"],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 31536000, // 1 year cache
     dangerouslyAllowSVG: true,
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    unoptimized: false,
+    unoptimized: process.env.NODE_ENV === "development", // Disable optimization in dev for faster loading
   },
   async headers() {
     return [
