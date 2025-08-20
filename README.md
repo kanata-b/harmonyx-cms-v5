@@ -527,27 +527,6 @@ curl http://localhost:8055/server/health
 - 💬 **Discussions**: [GitHub Discussions](https://github.com/kanata-b/harmonyx-cms-v5/discussions)
 - 📧 **Email**: support@harmonyx.dev
 
-## 📈 Roadmap
-
-### v5.1 (Q4 2025)
-- [ ] GraphQL API integration
-- [ ] Advanced search with Algolia
-- [ ] Multi-tenant architecture
-- [ ] Enhanced analytics dashboard
-
-### v5.2 (Q1 2026)
-- [ ] Mobile app with React Native
-- [ ] AI-powered content suggestions
-- [ ] Advanced caching strategies
-- [ ] Micro-frontend architecture
-
-### v6.0 (Q2 2026)
-- [ ] Next.js 16 upgrade
-- [ ] Edge runtime optimization
-- [ ] Advanced personalization
-- [ ] Enterprise features
-
-## 📄 License
 
 This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
