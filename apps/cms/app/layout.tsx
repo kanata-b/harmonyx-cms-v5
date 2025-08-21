@@ -4,6 +4,7 @@ import { Roboto } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { NextIntlClientProvider } from "next-intl";
+import { memoryCache } from "@/lib/cache";
 
 const roboto = Roboto({
   subsets: ["latin"],

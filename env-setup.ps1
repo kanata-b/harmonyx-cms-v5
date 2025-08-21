@@ -35,25 +35,28 @@ function Create-CmsEnv {
 # HarmonyX CMS - Next.js Application Environment Variables
 # =============================================================================
 
-# Next.js Application Configuration
+# Next.js Environment Variables
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 NEXT_PUBLIC_DIRECTUS_URL=http://localhost:8055
 
-# Development Environment
+# Development optimizations
 NODE_ENV=development
+# If run on Docker : http://directus:8055 
+# If run on Local : http://localhost:8055 
+DIRECTUS_URL=http://directus:8055 
 
-# Authentication (NextAuth.js) - Change in production!
+# Auth configuration
 AUTH_SECRET=TsV7D4wQZBEzQ6JIlXxifJl0/5YAarRyfFkDiDrfsj/UbzlXf0/sTRkcTbc=
 AUTH_URL=http://localhost:3000
 AUTH_TRUST_HOST=true
 
-# Development Stage
+# Stage configuration
 STAGE=development
 
-# Environment Validation
+# Skip environment validation during development for faster builds
 SKIP_ENV_VALIDATION=false
 
-# Performance Optimization
+# Fast Refresh optimization
 NEXT_TELEMETRY_DISABLED=1
 "@
     

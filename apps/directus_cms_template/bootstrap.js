@@ -35,47 +35,91 @@ async function main() {
   // apply CMS template
   console.log("📦 Applying CMS template...");
   try {
-    // ใช้ spawn แทน execSync เพื่อให้ควบคุม timeout ได้ดีขึ้น
-    const child = spawn('npx', [
-      'directus-template-cli', 
-      'apply',
-      '-p', // programmatic mode (non-interactive)
-      '--templateType', 
-      'community',
-      '--templateLocation',
-      'CMS', // template name ที่เราต้องการ
-      '--directusUrl', 
-      url,
-      '--directusToken', 
-      token,
-      '--disableTelemetry' // ปิด telemetry
-    ], {
-      stdio: 'inherit',
-      timeout: 120000 // เพิ่ม timeout เป็น 2 นาที
-    });
-
-    console.log("⏳ Installing CMS template... This may take a while...");
-
-    // รอให้ process เสร็จสิ้น
-    await new Promise((resolve, reject) => {
-      child.on('close', (code) => {
-        if (code === 0) {
-          resolve();
-        } else {
-          reject(new Error(`directus-template-cli exited with code ${code}`));
-        }
+    // ตรวจสอบ collection ก่อนถ้ามีทั้งหมดแล้วไม่ต้องทำอะไร
+    const schemaNames = [
+      "ai_prompts",
+      "block_button",
+      "block_button_group",
+      "block_form",
+      "block_gallery",
+      "block_gallery_items",
+      "block_hero",
+      "block_posts",
+      "block_pricing",
+      "block_pricing_cards",
+      "block_richtext",
+      "form_fields",
+      "form_submission_values",
+      "form_submissions",
+      "forms",
+      "globals",
+      "navigation",
+      "navigation_items",
+      "page_blocks",
+      "pages",
+      "posts",
+      "redirects",
+      "directus_settings",
+      "directus_users",
+    ]
+    let collectionCompleted = true;
+    for (const name of schemaNames) {
+      const checkCollection = await axios.get(url + "/items/" + name, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (checkCollection.data.data.length == 0) {
+        collectionCompleted = false;
+        return;
+      }
+    }
+    if(!collectionCompleted) {
+      // ใช้ spawn แทน execSync เพื่อให้ควบคุม timeout ได้ดีขึ้น
+      const child = spawn('npx', [
+        'directus-template-cli', 
+        'apply',
+        '-p', // programmatic mode (non-interactive)
+        '--templateType', 
+        'community',
+        '--templateLocation',
+        'CMS', // template name ที่เราต้องการ
+        '--directusUrl', 
+        url,
+        '--directusToken', 
+        token,
+        '--disableTelemetry' // ปิด telemetry
+      ], {
+        stdio: 'inherit',
+        timeout: 120000 // เพิ่ม timeout เป็น 2 นาที
       });
 
-      child.on('error', (err) => {
-        reject(err);
-      });
+      console.log("⏳ Installing CMS template... This may take a while...");
 
-      // timeout protection - เพิ่มเวลาเป็น 2 นาที
-      setTimeout(() => {
-        child.kill('SIGTERM');
-        reject(new Error('Template application timed out after 2 minutes'));
-      }, 120000);
-    });
+      // รอให้ process เสร็จสิ้น
+      await new Promise((resolve, reject) => {
+        child.on('close', (code) => {
+          if (code === 0) {
+            resolve();
+          } else {
+            reject(new Error(`directus-template-cli exited with code ${code}`));
+          }
+        });
+
+        child.on('error', (err) => {
+          reject(err);
+        });
+
+        // timeout protection - เพิ่มเวลาเป็น 2 นาที
+        setTimeout(() => {
+          child.kill('SIGTERM');
+          reject(new Error('Template application timed out after 2 minutes'));
+        }, 120000);
+      });
+    } else {
+      console.log("📦 CMS template already applied.");
+    }
+    
 
   } catch (error) {
     console.error("❌ Error applying template:", error.message);

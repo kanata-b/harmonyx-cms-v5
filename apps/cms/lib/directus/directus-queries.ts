@@ -112,6 +112,7 @@ export const directusQueries = {
         if (deep) queryOptions.deep = deep;
         if (meta) queryOptions.meta = meta;
 
+
         const posts = await directus.request(readItems("posts", queryOptions));
         return posts as Post[];
       } catch (error) {

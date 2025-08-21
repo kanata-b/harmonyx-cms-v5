@@ -44,15 +44,11 @@ function createConditionalCache<T extends unknown[], R>(
 export const cachedDirectusQueries = {
   // POSTS - High Priority with Conditional Caching
   posts: {
-    getAll: createConditionalCache(
+    getAll: createCachedQuery(
       directusQueries.posts.getAll,
-      (options) => {
-        // Published posts cache longer than drafts
-        const hasPublishedFilter = options?.filter && 
-          JSON.stringify(options.filter).includes('"status":{"_eq":"published"}');
-        return hasPublishedFilter ? CACHE_DURATIONS.LONG : CACHE_DURATIONS.MEDIUM;
-      },
-      [EXTENDED_CACHE_TAGS.POSTS]
+      "posts-all",
+      [EXTENDED_CACHE_TAGS.POSTS],
+      CACHE_DURATIONS.SHORT
     ),
 
     getBySlug: createCachedQuery(
@@ -76,7 +72,7 @@ export const cachedDirectusQueries = {
       directusQueries.pages.getAll,
       "pages-all",
       [EXTENDED_CACHE_TAGS.PAGES],
-      CACHE_DURATIONS.LONG
+      CACHE_DURATIONS.SHORT
     ),
 
     getBySlug: createCachedQuery(
@@ -224,8 +220,8 @@ export const enhancedQueries = {
   getPopularPosts: async (limit = 10): Promise<Post[]> => {
     const cacheKey = `popular-posts-${limit}`;
     const cached = memoryCache.get(cacheKey);
-
-    if (cached) return cached as Post[];
+    console.log(cached, "cached popular posts");
+    if (cached != null) return cached as Post[];
 
     const posts = await cachedDirectusQueries.posts.getAll({
       filter: { status: { _eq: "published" } },

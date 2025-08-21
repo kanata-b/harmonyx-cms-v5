@@ -54,13 +54,13 @@ const getImageUrl = (image: string | DirectusFile<any> | null): string => {
   
   if (typeof image === "string") {
     const url = `${directusUrl}/assets/${image}`;
-    console.log('Generated string URL:', url);
+    // console.log('Generated string URL:', url);
     return url;
   }
   
   if (image?.id) {
     const url = `${directusUrl}/assets/${image.id}`;
-    console.log('Generated object URL:', url);
+    // console.log('Generated object URL:', url);
     return url;
   }
   

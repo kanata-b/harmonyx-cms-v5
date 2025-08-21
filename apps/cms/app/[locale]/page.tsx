@@ -9,7 +9,7 @@ import {
 import Link from "next/link";
 import { enhancedQueries } from "@/lib/directus/directus-cached";
 import { Layout } from "@/components/common/layout";
-import { Posts } from "@/server/schema";
+import { DirectusUser } from "@directus/sdk";
 
 export default async function HomePage() {
   const popularPosts = await enhancedQueries.getPopularPosts(3);
@@ -76,7 +76,7 @@ export default async function HomePage() {
                         </Link>
                       </CardTitle>
                       <CardDescription className="line-clamp-2">
-                        {post.author?.toString()}
+                        {(post.author as DirectusUser)?.first_name}
                       </CardDescription>
                     </CardHeader>
                   </Card>

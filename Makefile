@@ -29,6 +29,10 @@ env-cms:
 	@echo "AUTH_URL=http://localhost:3000" >> apps/cms/.env.example
 	@echo "AUTH_TRUST_HOST=true" >> apps/cms/.env.example
 	@echo "STAGE=development" >> apps/cms/.env.example
+	@echo "DIRECTUS_URL=http://directus:8055" >> apps/cms/.env.example
+	@echo "# If run on Docker : http://directus:8055" >> apps/cms/.env.example
+	@echo "# If run on Local : http://localhost:8055" >> apps/cms/.env.example
+	@echo "DIRECTUS_URL=http://localhost:8055" >> apps/cms/.env.example
 	@echo "SKIP_ENV_VALIDATION=false" >> apps/cms/.env.example
 	@echo "NEXT_TELEMETRY_DISABLED=1" >> apps/cms/.env.example
 	@echo "Created apps/cms/.env.example"
