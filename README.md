@@ -75,7 +75,7 @@ Ensure you have the following installed:
 - **Docker** & **Docker Compose** ([Install](https://docs.docker.com/get-docker/))
 - **Git** ([Install](https://git-scm.com/downloads))
 
-### 1. Clone & Setup
+### Clone & Setup
 
 ```bash
 # Clone the repository
@@ -83,29 +83,10 @@ git clone https://github.com/kanata-b/harmonyx-cms-v5.git
 cd harmonyx-cms-v5
 
 # Copy environment files
-cp .env.example .env
-cp apps/cms/.env.example apps/cms/.env
+make env-all
 ```
 
-### 2. Environment Configuration
-
-Edit your environment files with your configuration:
-
-```bash
-# .env (Root level)
-POSTGRES_DB=harmonyx_cms
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=your_secure_password
-REDIS_PASSWORD=your_redis_password
-
-# apps/cms/.env (CMS App)
-DATABASE_URL=postgresql://postgres:your_secure_password@localhost:5432/harmonyx_cms
-DIRECTUS_URL=http://localhost:8055
-NEXTAUTH_URL=http://localhost:3000
-NEXTAUTH_SECRET=your_nextauth_secret
-```
-
-### 3. Start the Application
+### Start the Application
 
 ```bash
 # Start all services (Database, CMS, Cache)
@@ -122,7 +103,7 @@ pnpm install
 pnpm dev
 ```
 
-### 4. Access Your Application
+### Access Your Application
 
 | Service | URL | Description |
 |---------|-----|-------------|
@@ -179,25 +160,16 @@ harmonyx-cms-v5/
 ```bash
 # Development
 pnpm dev              # Start Next.js dev server with Turbopack
-pnpm dev:debug        # Start with debugging enabled
-pnpm dev:analyze      # Build with bundle analyzer
 
 # Building & Production
 pnpm build            # Build for production
 pnpm start            # Start production server
-pnpm preview          # Preview production build
 
 # Code Quality
 pnpm lint             # Run ESLint with auto-fix
 pnpm lint:check       # Check linting without fixes  
 pnpm format           # Format code with Prettier
-pnpm type-check       # TypeScript type checking
 
-# Database & Services
-pnpm db:push          # Push schema changes to database
-pnpm db:migrate       # Run database migrations
-pnpm cache:clear      # Clear Redis cache
-```
 
 ### Docker Development Commands
 
@@ -219,44 +191,6 @@ docker compose exec redis redis-cli
 # Service-specific Operations
 docker compose exec directus npx directus bootstrap
 docker compose exec cms-app pnpm build
-```
-
-### Environment Variables
-
-#### Core Configuration
-```env
-# Database Configuration
-DATABASE_URL=postgresql://user:password@localhost:5432/harmonyx_cms
-REDIS_URL=redis://localhost:6379
-
-# Directus CMS
-DIRECTUS_URL=http://localhost:8055
-DIRECTUS_TOKEN=your-admin-token
-
-# Authentication
-NEXTAUTH_URL=http://localhost:3000
-NEXTAUTH_SECRET=your-32-character-secret
-
-# Application
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-NODE_ENV=development
-```
-
-#### Optional Configuration
-```env
-# Performance & Monitoring
-NEXT_TELEMETRY_DISABLED=1
-SKIP_ENV_VALIDATION=false
-ENABLE_PERFORMANCE_MONITORING=true
-
-# Features
-ENABLE_ANALYTICS=false
-ENABLE_SEARCH=true
-ENABLE_COMMENTS=false
-
-# Security
-AUTH_TRUST_HOST=true
-CORS_ORIGIN=http://localhost:3000
 ```
 
 ## 🌐 Internationalization (i18n)
@@ -349,12 +283,6 @@ docker compose -f docker-compose.prod.yml up -d
 - Use docker-compose.yml
 - Configure managed database
 - Set up CDN for static assets
-
-**AWS ECS:**
-- Build and push to ECR
-- Configure ECS tasks
-- Use RDS for PostgreSQL
-- Use ElastiCache for Redis
 
 ### Performance Optimization
 
@@ -519,18 +447,6 @@ curl http://localhost:8055/server/health
 
 # Verify image domains in next.config.js
 ```
-
-### Getting Help
-
-- 📖 **Documentation**: [Wiki](https://github.com/kanata-b/harmonyx-cms-v5/wiki)
-- 🐛 **Bug Reports**: [Issues](https://github.com/kanata-b/harmonyx-cms-v5/issues)
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/kanata-b/harmonyx-cms-v5/discussions)
-- 📧 **Email**: support@harmonyx.dev
-
-
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
-
-```
 MIT License
 
 Copyright (c) 2025 HarmonyX CMS
@@ -554,20 +470,11 @@ furnished to do so, subject to conditions.
 - [shadcn/ui](https://ui.shadcn.com/) - Beautiful UI components
 - [tRPC](https://trpc.io/) - End-to-end typesafe APIs
 
-### Contributors
-- [@kanata-b](https://github.com/kanata-b) - Project Lead & Architecture
-- [All Contributors](https://github.com/kanata-b/harmonyx-cms-v5/contributors) - Thank you! 🎉
-
-### Special Thanks
-- The Next.js team for the amazing framework
-- The Directus team for the powerful headless CMS
-- The open-source community for making this possible
-
 ---
 
 <div align="center">
-  <h3>🎵 HarmonyX CMS - Where Content Meets Technology</h3>
-  <p>Built with ❤️ using modern web technologies</p>
+  <h3>HarmonyX CMS - Where Content Meets Technology</h3>
+  <p>Built with using modern web technologies</p>
   
   <p>
     <a href="https://nextjs.org">
